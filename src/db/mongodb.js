@@ -4,27 +4,25 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
-
+let cachedClient = null;
 let cachedDb = null;
 
 export async function connectToDatabase() {
-  try {
-    if (cachedDb) {
-      console.log('Using cached database connection');
-      return cachedDb;
-    }
-
-    console.log('Connecting to MongoDB...');
-    await client.connect();
-    const db = client.db();
-    cachedDb = db;
-    console.log('Successfully connected to MongoDB');
-    return db;
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
-    throw error;
+  if (cachedClient && cachedDb) {
+    console.log('Using cached database connection');
+    return { client: cachedClient, db: cachedDb };
   }
+
+  console.log('Connecting to MongoDB...');
+  const client = new MongoClient(uri, { serverSelectionTimeoutMS: 5000 }); // タイムアウトを5秒に設定
+  await client.connect();
+  const db = client.db();
+
+  cachedClient = client;
+  cachedDb = db;
+  console.log('Successfully connected to MongoDB');
+
+  return { client, db };
 }
 
 export function getCollection(name) {
