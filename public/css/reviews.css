@@ -1,0 +1,20 @@
+.review-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.review-card {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.review-card:last-child {
+  border-bottom: none;
+}
+
+.rating {
+  color: #ffc107;
+  margin-bottom: 5px;
+}

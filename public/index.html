@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusSpot - Study Spot Finder</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/spots.css">
+    <link rel="stylesheet" href="/css/reviews.css">
+</head>
+<body>
+    <header>
+        <h1>CampusSpot</h1>
+    </header>
+
+    <main>
+        <section id="add-spot-section">
+            <h2>Add New Study Spot</h2>
+            <form id="add-spot-form">
+                <div class="form-group">
+                    <label for="name">Spot Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="building">Building:</label>
+                    <input type="text" id="building" name="building" required>
+                </div>
+                <div class="form-group">
+                    <label for="floor">Floor:</label>
+                    <input type="text" id="floor" name="floor" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="hasOutlet" name="hasOutlet">
+                        Has Power Outlets
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="noiseLevel">Noise Level:</label>
+                    <select id="noiseLevel" name="noiseLevel" required>
+                        <option value="quiet">Quiet</option>
+                        <option value="moderate">Moderate</option>
+                        <option value="noisy">Noisy</option>
+                    </select>
+                </div>
+                <button type="submit">Add Spot</button>
+            </form>
+        </section>
+
+        <section id="spots-list">
+            <h2>Study Spots</h2>
+            <div id="spots-container"></div>
+        </section>
+    </main>
+
+    <script type="module" src="/js/api.js"></script>
+    <script type="module" src="/js/spots.js"></script>
+    <script type="module" src="/js/reviews.js"></script>
+</body>
+</html>
