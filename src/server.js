@@ -19,8 +19,25 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.use('/api/spots', spotsRouter);
-app.use('/api/reviews', reviewsRouter);
+app.use('/api/spots', async (req, res, next) => {
+ try {
+   await connectToDatabase();
+   spotsRouter(req, res, next);
+ } catch (error) {
+   console.error('Error in spots route:', error);
+   res.status(500).json({ message: 'Database connection failed' });
+ }
+});
+
+app.use('/api/reviews', async (req, res, next) => {
+ try {
+   await connectToDatabase();
+   reviewsRouter(req, res, next);
+ } catch (error) {
+   console.error('Error in reviews route:', error);
+   res.status(500).json({ message: 'Database connection failed' });
+ }
+});
 
 app.use((err, req, res, next) => {
  console.error(err.stack);

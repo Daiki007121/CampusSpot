@@ -6,17 +6,31 @@ dotenv.config();
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
+let cachedDb = null;
+
 export async function connectToDatabase() {
   try {
+    if (cachedDb) {
+      console.log('Using cached database connection');
+      return cachedDb;
+    }
+
+    console.log('Connecting to MongoDB...');
     await client.connect();
-    console.log('Successfully connected to MongoDB.');
-    return client.db();
+    const db = client.db();
+    cachedDb = db;
+    console.log('Successfully connected to MongoDB');
+    return db;
   } catch (error) {
     console.error('MongoDB connection error:', error);
-    process.exit(1);
+    throw error;
   }
 }
 
 export function getCollection(name) {
-  return client.db().collection(name);
+  if (!cachedDb) {
+    console.log('No database connection');
+    throw new Error('Call connectToDatabase first');
+  }
+  return cachedDb.collection(name);
 }
