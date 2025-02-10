@@ -1,98 +1,68 @@
-# CampusSpot (Study Spot Review System)
+# CampusSpot
 
-A web application that helps students discover and share study spots on campus.
+A web application for discovering and sharing study spots on campus.
+
+## Author
+Daiki Koike
+
+## Class Link
+[Web Development Spring 2025](https://johnguerra.co/classes/webDevelopment_spring_2025/)
 
 ## Project Objective
+CampusSpot helps students find and share the best study spots on campus. Users can:
+- Discover study locations
+- View spot details (power outlets, noise level, etc.)
+- Share their experiences through reviews
+- Browse other students' recommendations
 
-This application allows students to:
-- Share their favorite study locations on campus
-- Find study spots with specific amenities (like power outlets)
-- Read and write reviews about study locations
-
-## Features
-
-- Add new study spots with details (building, floor, amenities)
-- Browse existing study spots
-- Write and read reviews
-- Filter spots by various criteria
-
-## Design Mockups
-
-### Main Page Layout
-
-Header
-- CampusSpot logo/title at the top center  
-- Clean, minimalist design  
-
-Main Content
-
-Add New Study Spot Section
-- Form at the top of the page**
-  - Input fields:**
-    - Spot Name (text input)
-    - Building (text input)
-    - Floor (text input)
-    - Power Outlets (checkbox)
-    - Noise Level(dropdown)
-  - Submit button below form
-
-Study Spots List Section
-- Grid layout of spot cards
-- Each card contains:
-  - Spot name as header
-  - Building and floor info
-  - Power outlet availability
-  - Noise level indicator**
-  - Show Reviews button
-
-
+## Screenshots
+![CampusSpot Interface](./docs/images/campus-spot-main.png)
+The main interface of CampusSpot showing the spot submission form and list of available study spots.
 
 ## Technologies Used
-
-- Frontend: HTML5, CSS3, Vanilla JavaScript
+- Frontend: Vanilla JavaScript, HTML5, CSS3
 - Backend: Node.js, Express
 - Database: MongoDB
-- Development Tools: ESLint, Prettier
+- Deployment: Vercel
 
-## Setup Instructions
+## Getting Started
 
-1. Clone the repository
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB account
+- npm or yarn
+
+### Installation
+1. Clone the repository:
 ```bash
-git clone [your-repository-url]
-cd campus-spot
+git clone [your-repo-url]
 ```
 
-2. Install dependencies
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-3. Create .env file in the root directory with:
-```
-MONGODB_URI=your_mongodb_connection_string
-PORT=3000
-```
+3. Create a `.env` file based on `.env.example` and fill in your credentials.
 
-4. Run the application
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
-## Project Structure
-```
-campus-spot/
-├── public/          # Static files
-├── src/             # Server-side code
-│   ├── db/         # Database connection
-│   └── routes/     # API routes
-└── package.json
-```
+5. Visit `http://localhost:3000` in your browser.
 
-## Author
-Daiki Koike 
+## API Documentation
+The application provides the following API endpoints:
 
-## Class Link
-https://johnguerra.co/classes/webDevelopment_spring_2025/
+### Spots
+- GET `/api/spots` - Get all study spots
+- POST `/api/spots` - Create a new study spot
+- GET `/api/spots/:id` - Get specific spot details
+
+### Reviews
+- GET `/api/reviews/spot/:spotId` - Get reviews for a specific spot
+- POST `/api/reviews` - Create a new review
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
