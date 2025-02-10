@@ -8,21 +8,23 @@ let cachedClient = null;
 let cachedDb = null;
 
 export async function connectToDatabase() {
-  if (cachedClient && cachedDb) {
-    console.log('Using cached database connection');
-    return { client: cachedClient, db: cachedDb };
+  try {
+    if (cachedClient && cachedDb) {
+      console.log('Using cached database connection');
+      return { client: cachedClient, db: cachedDb };
+    }
+    console.log('Connecting to MongoDB...', uri); // URIの最初の部分だけログ出力
+    const client = new MongoClient(uri);
+    await client.connect();
+    const db = client.db();
+    cachedClient = client;
+    cachedDb = db;
+    console.log('Successfully connected to MongoDB');
+    return { client, db };
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    throw error;
   }
-
-  console.log('Connecting to MongoDB...');
-  const client = new MongoClient(uri, { serverSelectionTimeoutMS: 5000 }); // タイムアウトを5秒に設定
-  await client.connect();
-  const db = client.db();
-
-  cachedClient = client;
-  cachedDb = db;
-  console.log('Successfully connected to MongoDB');
-
-  return { client, db };
 }
 
 export function getCollection(name) {
