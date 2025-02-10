@@ -1,12 +1,13 @@
 import express from 'express';
 import { ObjectId } from 'mongodb';
-import { getCollection } from '../db/mongodb.js';
+import { getCollection, connectToDatabase } from '../db/mongodb.js';
 
 const router = express.Router();
 
 // Get all spots
 router.get('/', async (req, res) => {
   try {
+    await connectToDatabase(); // これを追加
     const spots = await getCollection('spots').find().toArray();
     res.json(spots);
   } catch (error) {
@@ -18,6 +19,7 @@ router.get('/', async (req, res) => {
 // Create new spot
 router.post('/', async (req, res) => {
   try {
+    await connectToDatabase(); // これを追加
     const spot = {
       ...req.body,
       createdAt: new Date(),
@@ -34,6 +36,7 @@ router.post('/', async (req, res) => {
 // Get spot by ID
 router.get('/:id', async (req, res) => {
   try {
+    await connectToDatabase(); // これを追加
     const spot = await getCollection('spots').findOne({ _id: new ObjectId(req.params.id) });
     if (spot) {
       res.json(spot);
