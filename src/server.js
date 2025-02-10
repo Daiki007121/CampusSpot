@@ -32,31 +32,21 @@ app.get('/api/test-db', async (req, res) => {
 });
 
 // 📌 `spots` API endpoint
-app.use('/api/spots', async (req, res, next) => {
-  try {
-    await connectToDatabase();
-    spotsRouter(req, res, next);
-  } catch (error) {
-    console.error('Error in spots route:', error);
-    res.status(500).json({ message: 'Database connection failed' });
-  }
+app.use('/api/spots', (req, res, next) => {
+  console.log("🔍 Received request:", req.method, req.url, req.body); // デバッグ用ログ
+  spotsRouter(req, res, next);
 });
 
 // 📌 `reviews` API endpoint
-app.use('/api/reviews', async (req, res, next) => {
-  try {
-    await connectToDatabase();
-    reviewsRouter(req, res, next);
-  } catch (error) {
-    console.error('Error in reviews route:', error);
-    res.status(500).json({ message: 'Database connection failed' });
-  }
+app.use('/api/reviews', (req, res, next) => {
+  console.log("🔍 Received request:", req.method, req.url, req.body);
+  reviewsRouter(req, res, next);
 });
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something went wrong!');
+  console.error("🔥 Global error:", err);
+  res.status(500).send({ message: 'Something went wrong!', error: err.message });
 });
 
 // ✅ Export app for Vercel deployment
