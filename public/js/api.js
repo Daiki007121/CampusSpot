@@ -30,5 +30,23 @@ export const api = {
     });
     if (!response.ok) throw new Error('Failed to create review');
     return response.json();
+  },
+
+  async updateSpot(spotId, spotData) {
+    const response = await fetch(`/api/spots/${spotId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(spotData),
+    });
+    if (!response.ok) throw new Error('Failed to update spot');
+    return response.json();
+  },
+
+  async deleteSpot(spotId) {
+    const response = await fetch(`/api/spots/${spotId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) throw new Error('Failed to delete spot');
+    return response.json();
   }
 };
