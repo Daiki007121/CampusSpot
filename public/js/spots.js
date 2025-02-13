@@ -24,11 +24,11 @@ function displaySpots(spots) {
         <p>Floor: ${spot.floor}</p>
         <p>Power Outlets: ${spot.hasOutlet ? 'Yes' : 'No'}</p>
         <p>Noise Level: ${spot.noiseLevel}</p>
-        <button onclick="showReviews('${spot._id}')">Show Reviews</button>
-      </div>
-      <div class="spot-actions">
-        <button onclick="editSpot('${spot._id}')">Edit</button>
-        <button onclick="deleteSpot('${spot._id}')" class="delete-btn">Delete</button>
+        <button class="review-button" onclick="showReviews('${spot._id}')">Show Reviews</button>
+        <div class="spot-actions">
+          <button onclick="editSpot('${spot._id}')">Edit</button>
+          <button onclick="deleteSpot('${spot._id}')" class="delete-btn">Delete</button>
+        </div>
       </div>
     </div>
   `).join('');
@@ -36,69 +36,52 @@ function displaySpots(spots) {
 
 function setupSpotForm() {
   const form = document.getElementById('add-spot-form');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = {
-      name: form.name.value,
-      building: form.building.value,
-      floor: form.floor.value,
-      hasOutlet: form.hasOutlet.checked,
-      noiseLevel: form.noiseLevel.value
-    };
-
-    try {
-      await api.createSpot(formData);
-      form.reset();
-      loadSpots();
-    } catch (error) {
-      console.error('Error creating spot:', error);
-    }
-  });
+  form.addEventListener('submit', handleFormSubmit);
 }
 
-// Edit spot function
+async function handleFormSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const formData = {
+    name: form.name.value,
+    building: form.building.value,
+    floor: form.floor.value,
+    hasOutlet: form.hasOutlet.checked,
+    noiseLevel: form.noiseLevel.value
+  };
+
+  const spotId = form.dataset.editingSpotId;
+
+  try {
+    if (spotId) {
+      await api.updateSpot(spotId, formData);
+      form.removeAttribute('data-editing-spot-id');
+      form.querySelector('button[type="submit"]').textContent = 'Add Spot';
+    } else {
+      await api.createSpot(formData);
+    }
+    form.reset();
+    loadSpots();
+  } catch (error) {
+    console.error('Error saving spot:', error);
+  }
+}
+
 window.editSpot = async (spotId) => {
+  const form = document.getElementById('add-spot-form');
   const spotCard = document.querySelector(`[data-spot-id="${spotId}"]`);
   const spotContent = spotCard.querySelector('.spot-content');
-  const name = spotContent.querySelector('h3').textContent;
-  const building = spotContent.querySelector('p:nth-child(2)').textContent.replace('Building: ', '');
-  const floor = spotContent.querySelector('p:nth-child(3)').textContent.replace('Floor: ', '');
-  const hasOutlet = spotContent.querySelector('p:nth-child(4)').textContent.includes('Yes');
-  const noiseLevel = spotContent.querySelector('p:nth-child(5)').textContent.replace('Noise Level: ', '');
-
-  const form = document.getElementById('add-spot-form');
-  form.name.value = name;
-  form.building.value = building;
-  form.floor.value = floor;
-  form.hasOutlet.checked = hasOutlet;
-  form.noiseLevel.value = noiseLevel.toLowerCase();
-
-  // Change form submit handler temporarily
-  const originalSubmitHandler = form.onsubmit;
-  form.onsubmit = async (e) => {
-    e.preventDefault();
-    
-    const formData = {
-      name: form.name.value,
-      building: form.building.value,
-      floor: form.floor.value,
-      hasOutlet: form.hasOutlet.checked,
-      noiseLevel: form.noiseLevel.value
-    };
-
-    try {
-      await api.updateSpot(spotId, formData);
-      form.reset();
-      loadSpots();
-      form.onsubmit = originalSubmitHandler;
-    } catch (error) {
-      console.error('Error updating spot:', error);
-    }
-  };
+  
+  form.name.value = spotContent.querySelector('h3').textContent;
+  form.building.value = spotContent.querySelector('p:nth-child(2)').textContent.replace('Building: ', '');
+  form.floor.value = spotContent.querySelector('p:nth-child(3)').textContent.replace('Floor: ', '');
+  form.hasOutlet.checked = spotContent.querySelector('p:nth-child(4)').textContent.includes('Yes');
+  form.noiseLevel.value = spotContent.querySelector('p:nth-child(5)').textContent.replace('Noise Level: ', '').toLowerCase();
+  
+  form.dataset.editingSpotId = spotId;
+  form.querySelector('button[type="submit"]').textContent = 'Update Spot';
 };
 
-// Delete spot function
 window.deleteSpot = async (spotId) => {
   if (confirm('Are you sure you want to delete this spot?')) {
     try {
