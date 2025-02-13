@@ -8,7 +8,10 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     await connectToDatabase();
-    const spots = await getCollection('spots').find().toArray();
+    const spots = await getCollection('spots')
+      .find()
+      .sort({ createdAt: -1 }) // -1 means a new devending order 
+      .toArray();
     res.json(spots);
   } catch (error) {
     console.error('Error fetching spots:', error);
