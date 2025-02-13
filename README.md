@@ -1,4 +1,3 @@
-```
 # CampusSpot
 
 A web application for discovering and sharing study spots on campus.
@@ -14,6 +13,7 @@ Daiki Koike
 
 ## Project Objective
 CampusSpot helps students find and share the best study spots on campus. Users can:
+
 - Discover study locations
 - View spot details (power outlets, noise level, etc.)
 - Share their experiences through reviews and ratings
@@ -47,13 +47,13 @@ Review system with 5-star rating and comments.
 
 ### Installation
 1. Clone the repository:
-```
+```bash
 git clone [your-repo-url]
 cd campus-spot-x
 ```
 
 2. Install dependencies:
-```
+```bash
 npm install
 ```
 
@@ -61,22 +61,22 @@ npm install
    - Copy `.env.example` to `.env`
    - Add your MongoDB connection string
    - Update other environment variables as needed
-```
+```bash
 cp .env.example .env
 ```
 
 4. Start the development server:
-```
+```bash
 npm run dev
 ```
 
 5. Build for production:
-```
+```bash
 npm run build
 ```
 
 6. Start production server:
-```
+```bash
 npm start
 ```
 
@@ -121,5 +121,3 @@ This project was developed using:
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-
