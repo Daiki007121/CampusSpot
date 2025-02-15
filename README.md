@@ -8,8 +8,8 @@ Daiki Koike
 ## Class Link
 [Web Development Spring 2025](https://johnguerra.co/classes/webDevelopment_spring_2025/)
 
-## Project Demo
-[Live Demo](https://campus-spot-x.vercel.app)
+## Project URL
+[Project URL](https://campus-spot.vercel.app/)
 
 ## Project Objective
 CampusSpot helps students find and share the best study spots on campus. Users can:
@@ -31,6 +31,9 @@ Review system with 5-star rating and comments.
 - Frontend: Vanilla JavaScript, HTML5, CSS3
 - Backend: Node.js, Express
 - Database: MongoDB
+  - Over 1,000 study spot records
+  - Spots collections
+  - Hosted on MongoDB Atlas
 - Deployment: Vercel
 - Development Tools: 
   - ESLint
